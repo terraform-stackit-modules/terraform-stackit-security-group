@@ -86,7 +86,7 @@ variable "rules" {
   validation {
     condition = alltrue([
       for r in var.rules :
-      r.protocol == null || !(r.protocol.name != null && r.protocol.number != null)
+      !(try(r.protocol.name, null) != null && try(r.protocol.number, null) != null)
     ])
     error_message = "In a rule protocol, provide either \"name\" or \"number\", not both."
   }
@@ -94,8 +94,8 @@ variable "rules" {
   validation {
     condition = alltrue([
       for r in var.rules :
-      r.protocol == null || r.protocol.name == null ||
-      contains(["ah", "dccp", "egp", "esp", "gre", "icmp", "igmp", "ipip", "ipv6-encap", "ipv6-frag", "ipv6-icmp", "ipv6-nonxt", "ipv6-opts", "ipv6-route", "ospf", "pgm", "rsvp", "sctp", "tcp", "udp", "udplite", "vrrp"], r.protocol.name)
+      try(r.protocol.name, null) == null ||
+      contains(["ah", "dccp", "egp", "esp", "gre", "icmp", "igmp", "ipip", "ipv6-encap", "ipv6-frag", "ipv6-icmp", "ipv6-nonxt", "ipv6-opts", "ipv6-route", "ospf", "pgm", "rsvp", "sctp", "tcp", "udp", "udplite", "vrrp"], try(r.protocol.name, ""))
     ])
     error_message = "protocol.name must be lowercase and one of: ah, dccp, egp, esp, gre, icmp, igmp, ipip, ipv6-encap, ipv6-frag, ipv6-icmp, ipv6-nonxt, ipv6-opts, ipv6-route, ospf, pgm, rsvp, sctp, tcp, udp, udplite, vrrp."
   }
