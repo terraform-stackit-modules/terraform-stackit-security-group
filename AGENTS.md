@@ -7,6 +7,44 @@ This file provides context and instructions for AI coding agents (Copilot, Curso
 This is a Terraform module for [STACKIT](https://www.stackit.de/en/), the cloud platform by Schwarz Group.
 It is part of the [terraform-stackit-modules](https://github.com/terraform-stackit-modules) organization, which aims to provide community-maintained, production-grade Terraform modules for STACKIT.
 
+### This module: security-group
+
+Manages a STACKIT **security group** and its **rules**. It is a standalone, reusable
+building block — by design it does NOT create networks or servers (compose it with the
+`terraform-stackit-network` / `terraform-stackit-compute` modules instead, the same way
+`terraform-aws-security-group` is separate from `terraform-aws-vpc`).
+
+**Resources managed**
+
+- `stackit_security_group` — the group itself (toggled by `create_security_group`, via `count`).
+- `stackit_security_group_rule` — one per entry in `var.rules`, created with `for_each`.
+
+**Inputs** (see `variables.tf` for full docs)
+
+- `project_id` (required, string) — STACKIT project ID.
+- `name` (required, string) — security group name.
+- `create_security_group` (bool, default `true`) — on/off toggle for the whole module.
+- `description`, `region`, `stateful`, `labels` — optional group attributes.
+- `rules` (list of objects, default `[]`) — each requires `direction` (`ingress`/`egress`)
+  and `ether_type`; optional `name`, `description`, `ip_range`,
+  `remote_security_group_id`, `protocol` (`{ name }` XOR `{ number }`), `port_range`
+  (`{ min, max }`, non-ICMP only), `icmp_parameters` (`{ code, type }`, ICMP only).
+  Four `validation` blocks enforce these constraints at plan time.
+
+**Outputs**
+
+- `security_group_id`, `security_group_name` — `null` when `create_security_group = false`.
+- `rule_ids` — map of rule key → `security_group_rule_id`.
+
+**Gotchas specific to this module**
+
+- On `stackit_security_group_rule`, `protocol` / `port_range` / `icmp_parameters` are
+  `nested_type/single` attributes: assign with `= { ... }`, NEVER `dynamic {}` blocks.
+- A rule sets EITHER `ip_range` OR `remote_security_group_id`, and a `protocol` sets
+  EITHER `name` OR `number` — enforced by validations, don't relax them.
+- The `for_each` key is `coalesce(rule.name, "<direction>-<index>")`; give rules a stable
+  `name` when you care about avoiding churn on list reordering.
+
 ## Repository structure
 
 ```
