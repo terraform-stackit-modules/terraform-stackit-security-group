@@ -26,10 +26,12 @@ module "security_group" {
       port_range = { min = 443, max = 443 }
     },
     {
-      name       = "all-egress"
+      name       = "https-egress"
       direction  = "egress"
       ether_type = "IPv4"
       ip_range   = "0.0.0.0/0"
+      protocol   = { name = "tcp" }
+      port_range = { min = 443, max = 443 }
     },
   ]
 }
