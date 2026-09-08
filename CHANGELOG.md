@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.0 (2026-09-08)
+
+### Features
+
+* implement security group and rules resources ([5568f70](https://github.com/terraform-stackit-modules/terraform-stackit-security-group/commit/5568f70b5d118a0f3147c61b59ea70faf15097f6))
+
+### Bug Fixes
+
+* guard protocol attribute access in rules validation with try() ([62e5ca4](https://github.com/terraform-stackit-modules/terraform-stackit-security-group/commit/62e5ca40d2940620dc52ef407fe5f82cc5979982))
+* Terratest: push project ID in variables from env vars ([e0a51ad](https://github.com/terraform-stackit-modules/terraform-stackit-security-group/commit/e0a51ad7d6351642ab868e23fb68bfc55aa7f413))
+
 ## 1.0.0 (2026-09-04)
 
 ### Features
