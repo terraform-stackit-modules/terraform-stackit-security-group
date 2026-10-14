@@ -3,7 +3,7 @@
 
 Terraform module which creates [security groups](https://docs.stackit.cloud/products/network/core-networking/security-groups/) and their rules on [STACKIT](https://www.stackit.de/en/).
 
-[![Terraform Registry](https://img.shields.io/endpoint?url=https://registry.terraform.io/v1/modules/terraform-stackit-modules/security-group/stackit/latest)](https://registry.terraform.io/modules/terraform-stackit-modules/security-group/stackit/latest)
+[![Terraform Registry](https://img.shields.io/github/v/release/terraform-stackit-modules/terraform-stackit-security-group?label=registry&color=7B42BC&logo=terraform&logoColor=white&style=flat)](https://registry.terraform.io/modules/terraform-stackit-modules/security-group/stackit/latest)
 [![License](https://img.shields.io/github/license/terraform-stackit-modules/terraform-stackit-security-group)](./LICENSE)
 
 This repository is not from the official STACKIT organization.
